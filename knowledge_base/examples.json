@@ -1,0 +1,10 @@
+[
+  {
+    "cypress": "cy.get('button').click()",
+    "playwright": "await page.locator('button').click();"
+  },
+  {
+    "cypress": "cy.url().should('include', '/home')",
+    "playwright": "await expect(page).toHaveURL(/.*home/);"
+  }
+]
