@@ -1,0 +1,13 @@
+# Ignore Python cache
+__pycache__/
+*.pyc
+
+# Ignore FAISS only if needed
+# *.faiss
+
+# Ignore compiled notebooks, logs
+*.ipynb_checkpoints
+*.log
+
+# Ignore Streamlit secrets
+.streamlit/secrets.toml
