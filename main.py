@@ -9,7 +9,7 @@ import os
 st.set_page_config(page_title="Cypress to Playwright Converter", layout="wide")
 
 # Title and description
-st.title("🚀 Cypress to Playwright Converter using Gen AI")
+st.title(" Cypress to Playwright Converter using Gen AI")
 
 st.write("""
 ### 🔹 About This App
@@ -51,3 +51,4 @@ if uploaded_file:
 
     with open(path, "rb") as f:
         st.download_button("📥 Download Converted File", data=f, file_name=filename)
+    st.markdown("<br><hr><p style='text-align:center;'>Developed by Devesh Kumar</p>", unsafe_allow_html=True)    
