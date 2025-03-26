@@ -1,10 +1,22 @@
 [
   {
-    "cypress": "cy.get('button').click()",
-    "playwright": "await page.locator('button').click();"
+    "cypress": "cy.get('button[type=submit]').click();",
+    "playwright": "await page.locator('button[type=submit]').click();"
   },
   {
-    "cypress": "cy.url().should('include', '/home')",
-    "playwright": "await expect(page).toHaveURL(/.*home/);"
+    "cypress": "cy.url().should('include', '/dashboard');",
+    "playwright": "await expect(page).toHaveURL(/.*dashboard/);"
+  },
+  {
+    "cypress": "cy.get('#username').type('admin');",
+    "playwright": "await page.locator('#username').fill('admin');"
+  },
+  {
+    "cypress": "cy.get('input[name=password]').type('123456');",
+    "playwright": "await page.locator('input[name=password]').fill('123456');"
+  },
+  {
+    "cypress": "cy.contains('Logout').click();",
+    "playwright": "await page.getByText('Logout').click();"
   }
 ]

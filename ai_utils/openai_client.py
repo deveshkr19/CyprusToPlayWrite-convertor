@@ -1,10 +1,7 @@
 import openai
 import streamlit as st
 
-# Load API key
 api_key = st.secrets["OPENAI_API_KEY"]
-
-# Initialize client
 client = openai.OpenAI(api_key=api_key)
 
 def get_gpt_response(prompt, temperature=0.2):
