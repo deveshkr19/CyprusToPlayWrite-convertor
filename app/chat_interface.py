@@ -31,6 +31,7 @@ def chat_with_model(cypress_code, edited_code, context):
             st.markdown(response)
             st.session_state.chat_history.append({"role": "assistant", "message": response})
 
-        if st.button("💾 Save this AI-improved version to Knowledge Base"):
-            save_feedback_to_kb(cypress_code, response)
-            st.success("✅ Saved to Knowledge Base!")
+            # Auto-save response to KB as feedback
+            from ai_utils.conversion import auto_save_chat_feedback
+            auto_save_chat_feedback(cypress_code, response)
+            st.success("✅ AI response saved to Knowledge Base!")
