@@ -21,8 +21,8 @@
   },
   
   {
-    "cypress": "...",
-    "playwright": "...",
+    "cypress": "cy.get('input[name=password]').type('anypassword');",
+    "playwright": "await page.locator('input[name=password]').fill('********');",
     "rule": "Mask passwords when converting"
   }
 ]
