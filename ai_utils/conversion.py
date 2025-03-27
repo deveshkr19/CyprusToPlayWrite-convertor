@@ -4,13 +4,17 @@ def convert_to_playwright(cypress_code: str, context: str) -> str:
     prompt = f"""
 You are a senior automation engineer. Convert Cypress tests to Playwright using '@playwright/test'.
 
-Refer to these project-specific examples:
+⚠️ Important rules:
+- If the Cypress test fills a password field (e.g., input[name=password]), mask the value as '********' in Playwright.
+- Do NOT include any real passwords in the output.
+
+Here are project-specific examples:
 {context}
 
-Now convert this Cypress test:
+Convert this Cypress test to Playwright:
 {cypress_code}
 
-Return only the converted Playwright test code.
+Return only the Playwright test code.
 """
     return get_gpt_response(prompt)
 
@@ -35,7 +39,11 @@ def save_feedback_to_kb(cypress_code, edited_playwright_code):
     import json
     from knowledge_base.builder import rebuild_index
 
-    new_example = {"cypress": cypress_code, "playwright": edited_playwright_code}
+    new_example = {
+        "cypress": cypress_code,
+        "playwright": edited_playwright_code,
+        "rule": "user_feedback"
+    }
 
     with open("knowledge_base/examples.json", "r+") as f:
         data = json.load(f)
@@ -44,5 +52,4 @@ def save_feedback_to_kb(cypress_code, edited_playwright_code):
         json.dump(data, f, indent=4)
         f.truncate()
 
-    # Automatically rebuild FAISS index after saving
     rebuild_index()
