@@ -1,5 +1,6 @@
 import streamlit as st
 from ai_utils.conversion import convert_to_playwright, improve_with_feedback, save_feedback_to_kb
+from app.chat_interface import chat_with_model
 from datetime import datetime
 from pathlib import Path
 import os
@@ -14,6 +15,7 @@ def show_conversion_output(cypress_code: str, context: str, original_filename: s
 
     if edited_code != playwright_code:
         st.success("✅ You edited the generated output.")
+
         if st.button("🔁 Improve via Feedback Loop"):
             refined_code = improve_with_feedback(cypress_code, edited_code, context)
             st.subheader("🔁 Refined Playwright Code (AI Enhanced)")
@@ -33,3 +35,6 @@ def show_conversion_output(cypress_code: str, context: str, original_filename: s
 
     with open(output_path, "rb") as f:
         st.download_button("📥 Download Converted File", data=f, file_name=output_filename)
+
+    # Launch the chat assistant UI
+    chat_with_model(cypress_code, edited_code, context)

@@ -18,7 +18,7 @@ Return only the Playwright test code.
 """
     return get_gpt_response(prompt)
 
-def improve_with_feedback(original_cypress, user_edited_code, context):
+def improve_with_feedback(original_cypress, user_edited_code, context, user_prompt=None):
     prompt = f"""
 You previously converted this Cypress test to Playwright:
 
@@ -28,10 +28,13 @@ Cypress:
 User-Edited Playwright Code:
 {user_edited_code}
 
-Here are the project-specific examples:
+Examples to reference:
 {context}
 
-Refine the Playwright code based on the feedback. Return only the final version.
+Now respond to the user's request:
+{user_prompt}
+
+Return the improved Playwright code.
 """
     return get_gpt_response(prompt)
 
