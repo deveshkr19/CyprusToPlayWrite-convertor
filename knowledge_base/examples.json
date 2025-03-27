@@ -19,4 +19,10 @@
     "cypress": "cy.contains('Logout').click();",
     "playwright": "await page.getByText('Logout').click();"
   }
+  
+  {
+    "cypress": "...",
+    "playwright": "...",
+    "rule": "Mask passwords when converting"
+  }
 ]
