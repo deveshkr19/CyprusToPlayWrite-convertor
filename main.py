@@ -15,10 +15,6 @@ show_layout()
 cypress_code, file_name = upload_file()
 
 if cypress_code:
-    # Show uploaded Cypress code
-    st.subheader("📄 Original Cypress Code")
-    st.code(cypress_code, language="javascript")
-
     # Get examples from knowledge base + FAISS + rules
     context_snippet = show_kb_context(cypress_code)
 
