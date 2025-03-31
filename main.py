@@ -1,22 +1,28 @@
 import streamlit as st
 from app.layout import show_layout
-from app.uploader import upload_file  # <- make sure uploader.py has: def upload_file()
+from app.uploader import upload_file
 from app.context_display import show_kb_context
 from app.conversion_output import show_conversion_output
+from app.view_kb import view_knowledge_base  # ✅ New import
 
-# Configure Streamlit page
+# Page config
 st.set_page_config(page_title="Cypress to Playwright Converter", layout="wide")
 st.title("🧪 Cypress to Playwright Converter using Gen AI")
 
-# Show layout description
+# Description and layout
 show_layout()
 
-# Handle file upload
+# File upload
 cypress_code, file_name = upload_file()
 
+# Run if file is uploaded
 if cypress_code:
-    # Get examples from knowledge base + FAISS + rules
+    # Get relevant context
     context_snippet = show_kb_context(cypress_code)
 
-    # Show conversion output + chat + feedback saving
+    # Conversion + chat + feedback
     show_conversion_output(cypress_code, context_snippet, file_name)
+
+    # 📘 View saved knowledge base examples
+    with st.expander("📚 View Recent Knowledge Base Entries"):
+        view_knowledge_base()
