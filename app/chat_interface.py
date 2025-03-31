@@ -1,5 +1,5 @@
 import streamlit as st
-from ai_utils.conversion import improve_with_feedback, save_feedback_to_kb
+from ai_utils.conversion import improve_with_feedback, auto_save_chat_feedback
 
 def chat_with_model(cypress_code, edited_code, context):
     if "chat_history" not in st.session_state:
@@ -31,7 +31,6 @@ def chat_with_model(cypress_code, edited_code, context):
             st.markdown(response)
             st.session_state.chat_history.append({"role": "assistant", "message": response})
 
-            # Auto-save response to KB as feedback
-            from ai_utils.conversion import auto_save_chat_feedback
+            # Auto-save the feedback
             auto_save_chat_feedback(cypress_code, response)
-            st.success("✅ AI response saved to Knowledge Base!")
+            st.success("✅ AI's improvement has been saved to the Knowledge Base!")

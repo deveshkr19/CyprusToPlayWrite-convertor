@@ -1,9 +1,16 @@
 import streamlit as st
 
-def setup_layout():
-    st.set_page_config(page_title="Cypress to Playwright Converter", layout="wide")
-    st.title("Cypress to Playwright Converter using Gen AI")
-    st.write("""
-    ### 🔹 About This App
-    This tool converts **Cypress test scripts** to **Playwright** using AI and project-specific examples.
-    """)
+def show_layout():
+    st.write(
+        """
+### 🔹 About This App
+This app helps you **convert Cypress test scripts into Playwright scripts** using AI and your own project context.
+
+### How It Works:
+1. Upload a Cypress test file (.js or .ts)  
+2. Click Convert – AI generates a Playwright version  
+3. Edit it if needed  
+4. Use the chat to improve results  
+5. Save feedback to help the model learn  
+"""
+    )

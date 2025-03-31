@@ -17,8 +17,8 @@ if uploaded_file:
     st.subheader("📄 Original Cypress Code")
     st.code(cypress_code, language="javascript")
 
-    # Show KB Context from FAISS + Rule-based
+    # Retrieve examples from FAISS + rule-based context
     context_snippet = show_kb_context(cypress_code)
 
-    # Run AI Conversion Output Page
+    # Show AI-generated Playwright conversion and chat-based refinements
     show_conversion_output(cypress_code, context_snippet, uploaded_file.name)

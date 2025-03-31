@@ -19,7 +19,6 @@ def retrieve_context(query, k=3):
     query_vec = embedder.encode([query])
     distances, indices = index.search(query_vec, k)
 
-    # Top-K from FAISS
     results = [
         {
             "cypress": examples[i]["cypress"],
@@ -29,14 +28,14 @@ def retrieve_context(query, k=3):
         for i, dist in zip(indices[0], distances[0])
     ]
 
-    # Always include rule-based examples (user_feedback, masking, etc.)
-    rule_based = [
-        {
-            "cypress": ex["cypress"],
-            "playwright": ex["playwright"],
-            "score": 1.0
-        }
-        for ex in examples if ex.get("rule") in ["user_feedback", "mask_passwords"]
-    ]
+    # Rule-based injection: ensure "mask_username" is always included if relevant
+    rule_based = []
+    for ex in examples:
+        if ex.get("rule") in ["user_feedback", "mask_username"] and "#username" in query:
+            rule_based.append({
+                "cypress": ex["cypress"],
+                "playwright": ex["playwright"],
+                "score": 1.0
+            })
 
     return results + rule_based
