@@ -6,24 +6,5 @@
   {
     "cypress": "cy.url().should('include', '/dashboard');",
     "playwright": "await expect(page).toHaveURL(/.*dashboard/);"
-  },
-  {
-    "cypress": "cy.get('#username').type('admin');",
-    "playwright": "await page.locator('#username').fill('********');",
-    "rule": "mask_username"
-  },
-  {
-    "cypress": "cy.get('input[name=password]').type('mySecret123');",
-    "playwright": "await page.locator('input[name=password]').fill('********');",
-    "rule": "mask_passwords"
-  },
-  {
-    "cypress": "cy.contains('Logout').click();",
-    "playwright": "await page.getByText('Logout').click();"
-  },
-  {
-    "cypress": "cy.get('[data-cy=email]').type('user@example.com');",
-    "playwright": "await page.locator('[data-cy=email]').fill('********');",
-    "rule": "user_feedback"
   }
 ]
