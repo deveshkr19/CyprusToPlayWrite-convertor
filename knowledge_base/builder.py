@@ -20,4 +20,4 @@ def rebuild_index():
     with open("knowledge_base/kb_metadata.pkl", "wb") as f:
         pickle.dump(examples, f)
 
-    print("✅ FAISS index rebuilt successfully.")
+    logging.info("✅ FAISS index rebuilt successfully.")
