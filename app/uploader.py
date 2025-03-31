@@ -1,6 +1,6 @@
 import streamlit as st
 
-def handle_upload():
+def upload_file():
     uploaded_file = st.file_uploader("Upload a Cypress test file (.js or .ts)", type=["js", "ts"])
     if uploaded_file:
         code = uploaded_file.read().decode("utf-8")
