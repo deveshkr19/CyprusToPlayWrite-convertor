@@ -7,13 +7,13 @@ def chat_with_model(cypress_code, edited_code, context):
 
     st.subheader("💬 Chat with the Conversion Assistant")
 
-    # Display chat history
+    # Display existing chat history
     for entry in st.session_state.chat_history:
         with st.chat_message(entry["role"]):
             st.markdown(entry["message"])
 
-    # Chat input
-    user_prompt = st.chat_input("Ask me to improve or update the Playwright code...")
+    # Input from user
+    user_prompt = st.chat_input("Ask AI to improve or update the Playwright code...")
 
     if user_prompt:
         st.session_state.chat_history.append({"role": "user", "message": user_prompt})
@@ -31,6 +31,6 @@ def chat_with_model(cypress_code, edited_code, context):
             st.markdown(response)
             st.session_state.chat_history.append({"role": "assistant", "message": response})
 
-            # Auto-save the feedback
+            # 💾 Auto-save to KB
             auto_save_chat_feedback(cypress_code, response)
             st.success("✅ AI's improvement has been saved to the Knowledge Base!")

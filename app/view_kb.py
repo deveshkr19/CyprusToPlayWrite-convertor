@@ -2,7 +2,7 @@ import streamlit as st
 import json
 
 def view_knowledge_base():
-    st.subheader("📘 Knowledge Base Entries")
+    st.subheader("📘 Full Knowledge Base")
     try:
         with open("knowledge_base/examples.json", "r") as f:
             examples = json.load(f)
@@ -11,8 +11,8 @@ def view_knowledge_base():
             st.info("Your knowledge base is currently empty.")
             return
 
-        # Show last 5 examples (most recent first)
-        for ex in examples[-5:][::-1]:
+        # Show all examples (newest first)
+        for ex in reversed(examples):
             st.code(
                 f"Cypress: {ex['cypress']}\nPlaywright: {ex['playwright']}\nRule: {ex.get('rule', 'N/A')}",
                 language="text"
