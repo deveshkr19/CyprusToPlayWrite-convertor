@@ -1,19 +1,24 @@
-import os
-import sys
-
-# Add root directory to sys.path for app module resolution
-ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-if ROOT_DIR not in sys.path:
-    sys.path.insert(0, ROOT_DIR)
-
 import streamlit as st
-from app.layout import setup_layout
-from app.uploader import handle_upload
+from app.layout import show_layout
+from app.uploader import upload_file
 from app.context_display import show_kb_context
 from app.conversion_output import show_conversion_output
 
-setup_layout()
-cypress_code, filename = handle_upload()
-if cypress_code:
+st.set_page_config(page_title="Cypress to Playwright Converter", layout="wide")
+
+st.title("🧪 Cypress to Playwright Converter using Gen AI")
+
+show_layout()
+
+uploaded_file = upload_file()
+
+if uploaded_file:
+    cypress_code = uploaded_file.read().decode("utf-8")
+    st.subheader("📄 Original Cypress Code")
+    st.code(cypress_code, language="javascript")
+
+    # Show KB Context from FAISS + Rule-based
     context_snippet = show_kb_context(cypress_code)
-    show_conversion_output(cypress_code, context_snippet, filename)
+
+    # Run AI Conversion Output Page
+    show_conversion_output(cypress_code, context_snippet, uploaded_file.name)

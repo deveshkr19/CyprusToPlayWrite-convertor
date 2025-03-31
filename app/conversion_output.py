@@ -1,16 +1,9 @@
-import os
-import sys
-
-# Add the root directory to sys.path to resolve ai_utils module
-ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if ROOT_DIR not in sys.path:
-    sys.path.insert(0, ROOT_DIR)
-
 import streamlit as st
 from ai_utils.conversion import convert_to_playwright, improve_with_feedback, save_feedback_to_kb
 from app.chat_interface import chat_with_model
 from datetime import datetime
 from pathlib import Path
+import os
 
 def show_conversion_output(cypress_code: str, context: str, original_filename: str):
     playwright_code = convert_to_playwright(cypress_code, context)
@@ -30,7 +23,7 @@ def show_conversion_output(cypress_code: str, context: str, original_filename: s
 
         if st.button("💾 Save as New Example in Knowledge Base"):
             save_feedback_to_kb(cypress_code, edited_code)
-            st.success("✅ Saved to Knowledge Base! Rebuild FAISS index to include it.")
+            st.success("✅ Saved to Knowledge Base!")
 
     os.makedirs("converted", exist_ok=True)
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
