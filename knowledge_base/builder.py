@@ -1,6 +1,7 @@
 import faiss
 import json
 import pickle
+import logging
 from sentence_transformers import SentenceTransformer
 
 embedder = SentenceTransformer("all-mpnet-base-v2")
