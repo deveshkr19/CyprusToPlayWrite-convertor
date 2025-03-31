@@ -1,9 +1,12 @@
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import streamlit as st
 from ai_utils.conversion import convert_to_playwright, improve_with_feedback, save_feedback_to_kb
 from app.chat_interface import chat_with_model
 from datetime import datetime
 from pathlib import Path
-import os
 
 def show_conversion_output(cypress_code: str, context: str, original_filename: str):
     playwright_code = convert_to_playwright(cypress_code, context)
