@@ -1,7 +1,9 @@
 from ai_utils.openai_client import get_gpt_response
 import json
 from knowledge_base.builder import rebuild_index
+import logging
 
+logging.basicConfig(level=logging.INFO)
 
 def convert_to_playwright(cypress_code: str, context: str) -> str:
     prompt = f"""
@@ -43,27 +45,12 @@ Return the improved Playwright code.
     return get_gpt_response(prompt)
 
 
-def save_feedback_to_kb(cypress_code, edited_playwright_code):
-    new_example = {
-        "cypress": cypress_code.strip(),
-        "playwright": edited_playwright_code.strip(),
-        "rule": "user_feedback"
-    }
-
-    with open("knowledge_base/examples.json", "r+") as f:
-        data = json.load(f)
-        data.append(new_example)
-        f.seek(0)
-        json.dump(data, f, indent=4)
-        f.truncate()
-
-    rebuild_index()
-
-
 def auto_save_chat_feedback(cypress_code, generated_playwright_code):
     rule = "user_feedback"
     if "fill('********')" in generated_playwright_code and "#username" in cypress_code:
         rule = "mask_username"
+    if "fill('********')" in generated_playwright_code and "#password" in cypress_code:
+        rule = "mask_password"
 
     new_example = {
         "cypress": cypress_code.strip(),
@@ -73,12 +60,14 @@ def auto_save_chat_feedback(cypress_code, generated_playwright_code):
 
     with open("knowledge_base/examples.json", "r+") as f:
         data = json.load(f)
-        # Avoid duplicates
         if any(e["cypress"] == new_example["cypress"] and e["playwright"] == new_example["playwright"] for e in data):
             return
         data.append(new_example)
         f.seek(0)
         json.dump(data, f, indent=4)
         f.truncate()
+
+    logging.info("💾 New KB entry saved:")
+    logging.info(json.dumps(new_example, indent=2))
 
     rebuild_index()
