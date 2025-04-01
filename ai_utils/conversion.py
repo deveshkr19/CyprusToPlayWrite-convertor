@@ -46,28 +46,48 @@ Return the improved Playwright code.
 
 
 def auto_save_chat_feedback(cypress_code, generated_playwright_code):
-    rule = "user_feedback"
-    if "fill('********')" in generated_playwright_code and "#username" in cypress_code:
-        rule = "mask_username"
-    if "fill('********')" in generated_playwright_code and "#password" in cypress_code:
-        rule = "mask_password"
+    from knowledge_base.builder import rebuild_index
+    import json
+    import re
 
-    new_example = {
-        "cypress": cypress_code.strip(),
-        "playwright": generated_playwright_code.strip(),
-        "rule": rule
-    }
+    new_examples = []
 
+    # Split into lines for matching
+    cypress_lines = [line.strip() for line in cypress_code.splitlines() if "cy.get" in line and ".type(" in line]
+    playwright_lines = [line.strip() for line in generated_playwright_code.splitlines() if "page.locator" in line and ".fill(" in line]
+
+    # Match lines by index (assumes order is preserved)
+    for c_line, p_line in zip(cypress_lines, playwright_lines):
+        rule = "user_feedback"
+        if "password" in c_line or "password" in p_line:
+            rule = "mask_password"
+        elif "username" in c_line or "username" in p_line:
+            rule = "mask_username"
+
+        new_example = {
+            "cypress": c_line,
+            "playwright": p_line,
+            "rule": rule
+        }
+
+        new_examples.append(new_example)
+
+    # Read existing examples.json
     with open("knowledge_base/examples.json", "r+") as f:
         data = json.load(f)
-        if any(e["cypress"] == new_example["cypress"] and e["playwright"] == new_example["playwright"] for e in data):
-            return
-        data.append(new_example)
+
+        for example in new_examples:
+            exists = any(
+                e["cypress"] == example["cypress"] and e["playwright"] == example["playwright"]
+                for e in data
+            )
+            if not exists:
+                data.append(example)
+                print("💾 New KB entry saved:", example)
+
         f.seek(0)
         json.dump(data, f, indent=4)
         f.truncate()
 
-    logging.info("💾 New KB entry saved:")
-    logging.info(json.dumps(new_example, indent=2))
-
+    # Rebuild FAISS index
     rebuild_index()
