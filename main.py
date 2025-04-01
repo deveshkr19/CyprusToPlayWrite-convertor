@@ -3,8 +3,8 @@ from app.layout import show_layout
 from app.uploader import upload_file
 from app.context_display import show_kb_context
 from app.conversion_output import show_conversion_output
-from app.view_kb import view_knowledge_base
-from app.debug_kb import debug_kb_viewer  # NEW
+from app.view_kb import view_knowledge_base  # ✅ New import
+from app.debug_kb import debug_kb_viewer
 
 # Page config
 st.set_page_config(page_title="Cypress to Playwright Converter", layout="wide")
@@ -16,12 +16,15 @@ show_layout()
 # File upload
 cypress_code, file_name = upload_file()
 
-# If file is uploaded
+# Run if file is uploaded
 if cypress_code:
+    # Get relevant context
     context_snippet = show_kb_context(cypress_code)
+
+    # Conversion + chat + feedback
     show_conversion_output(cypress_code, context_snippet, file_name)
 
-    # 📘 View KB entries
+    # 📘 View saved knowledge base examples
     with st.expander("📚 View Recent Knowledge Base Entries"):
         view_knowledge_base()
 
