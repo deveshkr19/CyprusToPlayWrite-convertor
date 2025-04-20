@@ -12,7 +12,9 @@ embedder = SentenceTransformer("all-mpnet-base-v2")
 
 # Load examples from the Excel file
 def load_examples_from_excel():
-    df = pd.read_excel(EXCEL_PATH)
+    df = pd.read_excel(EXCEL_PATH,engine="openpyxl")
+    st.write(f"✅ Loaded {len(df)} rows from Excel KB")
+
     examples = []
 
     for _, row in df.iterrows():
@@ -40,6 +42,7 @@ def load_examples():
 # Build FAISS index from examples
 def build_index():
     examples = load_examples()
+    st.write(f"📊 Total examples indexed: {len(examples)}")
     texts = [e["cypress"] for e in examples]
     vectors = embedder.encode(texts)
     dim = vectors[0].shape[0]
