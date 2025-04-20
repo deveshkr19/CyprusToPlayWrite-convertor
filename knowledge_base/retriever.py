@@ -1,6 +1,7 @@
 import faiss
 import json
 import pandas as pd
+import streamlit as st 
 from sentence_transformers import SentenceTransformer
 
 # Paths to files inside knowledge_base folder
